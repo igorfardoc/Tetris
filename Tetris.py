@@ -355,27 +355,28 @@ class TetrisBoard:
         self.draw_figura_on_board()
     
     def delete_buttom_lines(self):
-        delta = 0
-        for i in range(self.height + 3, self.height - 1, -1):
-            ok = True
-            for j in range(self.width):
-                if self.board[i][j] is None:
-                    ok = False
+        for o in range(4):
+            delta = 0
+            start = -1
+            for i in range(self.height + 3, 3, -1):
+                ok = True
+                for j in range(self.width):
+                    if self.board[i][j] is None:
+                        ok = False
+                        break
+                if ok:
+                    delta = 1
+                    start = i
                     break
-            if ok:
-                delta += 1
-                continue
-            else:
-                break
-        if delta == 0:
-            return
-        self.score += delta * 100
-        for i in range(self.height + 3, 3, -1):
-            for j in range(self.width):
-                if i < delta + 4:
-                    self.board[i][j] = None
-                else:
-                    self.board[i][j] = self.board[i - delta][j]
+            if delta == 0:
+                return
+            self.score += delta * 100
+            for i in range(start, 3, -1):
+                for j in range(self.width):
+                    if i == 4:
+                        self.board[i][j] = None
+                    else:
+                        self.board[i][j] = self.board[i - 1][j]
     
     def tick(self):
         new_y = self.figura_y + 1
